@@ -14,20 +14,20 @@
         }
 
         :root {
-            --bg-dark: #000000;
-            --bg-card: #0f0f0f;
-            --border-subtle: rgba(255, 255, 255, 0.06);
+            --bg-blue-dark: #001a33;
+            --bg-blue-bright: #0066ff;
+            --bg-stage: #003d7a;
             --text-primary: #ffffff;
-            --text-secondary: #888888;
-            --accent-gold: #c9a961;
-            --accent-red: #e74c3c;
-            --accent-blue: #3498db;
-            --glow-gold: rgba(201, 169, 97, 0.4);
+            --text-secondary: #b3d9ff;
+            --accent-gold: #ffd700;
+            --accent-cyan: #00d4ff;
+            --glow-blue: rgba(0, 212, 255, 0.6);
+            --glow-gold: rgba(255, 215, 0, 0.8);
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-dark);
+            background: var(--bg-blue-dark);
             color: var(--text-primary);
             min-height: 100vh;
             overflow: hidden;
@@ -43,10 +43,56 @@
             width: 100%;
             height: 100%;
             background:
-                radial-gradient(circle at 30% 40%, rgba(201, 169, 97, 0.02) 0%, transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(52, 152, 219, 0.02) 0%, transparent 50%),
-                var(--bg-dark);
+                radial-gradient(ellipse at center, var(--bg-stage) 0%, var(--bg-blue-dark) 70%);
             z-index: 0;
+        }
+
+        .background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.15) 50%, transparent 100%),
+                linear-gradient(75deg, transparent 0%, rgba(0, 212, 255, 0.1) 50%, transparent 100%),
+                linear-gradient(105deg, transparent 0%, rgba(0, 212, 255, 0.1) 50%, transparent 100%),
+                linear-gradient(60deg, transparent 0%, rgba(0, 212, 255, 0.12) 50%, transparent 100%),
+                linear-gradient(120deg, transparent 0%, rgba(0, 212, 255, 0.12) 50%, transparent 100%);
+            background-size:
+                200% 100%,
+                150% 100%,
+                150% 100%,
+                180% 100%,
+                180% 100%;
+            background-position:
+                center center,
+                20% center,
+                80% center,
+                40% center,
+                60% center;
+            animation: lightRays 8s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes lightRays {
+            0% {
+                background-position:
+                    center center,
+                    10% center,
+                    90% center,
+                    30% center,
+                    70% center;
+            }
+            100% {
+                background-position:
+                    center center,
+                    30% center,
+                    70% center,
+                    50% center,
+                    50% center;
+            }
         }
 
         .container {
@@ -213,96 +259,68 @@
             }
         }
 
-        /* Exceptional Card Design */
+        /* Theatrical Card Design */
         .card {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(20, 20, 20, 0.95) 100%);
-            border: 1px solid var(--border-subtle);
-            border-radius: 20px;
-            padding: 3rem 2.5rem;
+            background: transparent;
+            padding: 2rem 1.5rem;
             position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(40px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
         }
 
         .card.winner-glow {
-            border-color: var(--accent-gold);
-            background: linear-gradient(135deg, rgba(201, 169, 97, 0.08) 0%, var(--bg-card) 100%);
-            box-shadow:
-                0 0 1px 1px var(--accent-gold),
-                0 0 80px var(--glow-gold),
-                0 30px 60px rgba(0, 0, 0, 0.6);
+            filter: drop-shadow(0 0 60px var(--glow-gold));
         }
 
         .card-header {
-            text-align: center;
-            margin-bottom: 2rem;
+            order: 2;
+            width: 100%;
         }
 
         .card-badge {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            border-radius: 4px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 1.25rem;
-        }
-
-        .badge-cantante {
-            background: var(--accent-red);
-            color: white;
-        }
-
-        .badge-ballerino {
-            background: var(--accent-blue);
-            color: white;
+            display: none;
         }
 
         .card-name {
-            font-size: 2rem;
-            font-weight: 300;
+            background: rgba(0, 0, 0, 0.85);
             color: var(--text-primary);
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.01em;
+            padding: 1rem 2rem;
+            font-size: 1.75rem;
+            font-weight: 600;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            margin: 0;
         }
 
         .card-team {
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            letter-spacing: 0.05em;
+            display: none;
         }
 
         .card-photo {
-            width: 240px;
-            height: 240px;
-            margin: 0 auto 1.5rem;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            border: 1px solid var(--border-subtle);
+            order: 1;
+            width: 100%;
+            height: 380px;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1a2a3a, #0a1520);
+            border: 4px solid rgba(255, 255, 255, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5rem;
+            font-size: 8rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                0 0 80px rgba(0, 212, 255, 0.3);
         }
 
         .card-photo img {
@@ -313,20 +331,15 @@
 
         .card.winner-glow .card-photo {
             border-color: var(--accent-gold);
-            box-shadow: 0 0 50px var(--glow-gold);
+            box-shadow:
+                0 0 80px var(--glow-gold),
+                0 20px 60px rgba(0, 0, 0, 0.6);
         }
 
-        .card.winner-glow .card-photo::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 16px;
-            padding: 1px;
-            background: linear-gradient(45deg, var(--accent-gold), transparent, var(--accent-gold));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            animation: rotate 4s linear infinite;
+        .card.winner-glow .card-name {
+            background: var(--accent-gold);
+            color: #000;
+            box-shadow: 0 0 40px var(--glow-gold);
         }
 
         @keyframes rotate {
@@ -351,13 +364,16 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 14rem;
-            font-weight: 200;
+            font-size: 16rem;
+            font-weight: 700;
             color: var(--accent-gold);
             opacity: 0;
             pointer-events: none;
             z-index: 200;
-            text-shadow: 0 0 80px var(--glow-gold);
+            text-shadow:
+                0 0 40px var(--glow-gold),
+                0 0 80px var(--glow-gold),
+                0 0 120px rgba(255, 215, 0, 0.5);
         }
 
         .countdown.show {
@@ -421,13 +437,15 @@
         }
 
         .btn-primary {
-            background: var(--accent-gold);
-            color: var(--bg-dark);
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #ffed4e 100%);
+            color: #000;
+            font-weight: 700;
+            box-shadow: 0 8px 24px var(--glow-gold);
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 30px var(--glow-gold);
+            box-shadow: 0 12px 40px var(--glow-gold);
         }
 
         .btn-primary:disabled {
@@ -448,15 +466,15 @@
             color: var(--text-primary);
         }
 
-        /* Exceptional Winner Modal */
+        /* Theatrical Winner Modal */
         .winner-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.98);
-            backdrop-filter: blur(30px);
+            background: radial-gradient(ellipse at center, rgba(0, 61, 122, 0.98) 0%, rgba(0, 26, 51, 0.99) 70%);
+            backdrop-filter: blur(40px);
             display: none;
             align-items: center;
             justify-content: center;
@@ -480,14 +498,8 @@
         }
 
         .winner-card-container {
-            background: linear-gradient(135deg, rgba(201, 169, 97, 0.05) 0%, var(--bg-card) 100%);
-            border: 1px solid var(--accent-gold);
-            border-radius: 24px;
-            padding: 4rem 3.5rem;
-            box-shadow:
-                0 0 1px 1px var(--accent-gold),
-                0 0 120px var(--glow-gold),
-                0 40px 80px rgba(0, 0, 0, 0.6);
+            background: transparent;
+            padding: 3rem 2.5rem;
             animation: winnerCardEntrance 1s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
@@ -507,31 +519,35 @@
 
         .winner-badge {
             display: inline-block;
-            padding: 0.875rem 2.5rem;
-            background: var(--accent-gold);
-            color: var(--bg-dark);
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.2em;
+            padding: 1.25rem 3.5rem;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #ffed4e 100%);
+            color: #000;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
             margin-bottom: 3rem;
+            box-shadow: 0 0 60px var(--glow-gold);
         }
 
         .winner-photo-large {
-            width: 340px;
-            height: 340px;
-            margin: 0 auto 2.5rem;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            border: 2px solid var(--accent-gold);
+            width: 450px;
+            height: 450px;
+            margin: 0 auto 2rem;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1a2a3a, #0a1520);
+            border: 6px solid var(--accent-gold);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10rem;
+            font-size: 12rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 60px var(--glow-gold);
+            box-shadow:
+                0 0 100px var(--glow-gold),
+                0 0 200px rgba(255, 215, 0, 0.4),
+                0 30px 80px rgba(0, 0, 0, 0.6);
         }
 
         .winner-photo-large img {
@@ -540,35 +556,22 @@
             object-fit: cover;
         }
 
-        .winner-photo-large::before {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 20px;
-            padding: 2px;
-            background: linear-gradient(45deg, var(--accent-gold), transparent, var(--accent-gold));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            animation: rotate 5s linear infinite;
-        }
-
         .winner-name-display {
-            font-size: 3.5rem;
-            font-weight: 300;
-            color: var(--accent-gold);
-            margin-bottom: 1.25rem;
-            text-shadow: 0 0 60px var(--glow-gold);
-            letter-spacing: -0.01em;
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--text-primary);
+            padding: 1.5rem 3rem;
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
+            border-radius: 12px;
+            margin-bottom: 3rem;
         }
 
         .winner-subtitle {
-            font-size: 0.9rem;
-            font-weight: 400;
-            color: var(--text-secondary);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 3rem;
+            display: none;
         }
 
         .confetti {
@@ -608,27 +611,26 @@
             }
 
             .card-photo {
-                width: 200px;
-                height: 200px;
-                font-size: 4rem;
+                height: 320px;
+                font-size: 6rem;
             }
 
             .card-name {
-                font-size: 1.75rem;
+                font-size: 1.5rem;
             }
 
             .countdown {
-                font-size: 10rem;
+                font-size: 12rem;
             }
 
             .winner-photo-large {
-                width: 280px;
-                height: 280px;
-                font-size: 8rem;
+                width: 360px;
+                height: 360px;
+                font-size: 10rem;
             }
 
             .winner-name-display {
-                font-size: 2.75rem;
+                font-size: 2.25rem;
             }
         }
 
@@ -666,13 +668,13 @@
             }
 
             .card-name {
-                font-size: 1.5rem;
+                font-size: 1.25rem;
+                padding: 0.75rem 1.5rem;
             }
 
             .card-photo {
-                width: 160px;
-                height: 160px;
-                font-size: 3.5rem;
+                height: 260px;
+                font-size: 5rem;
             }
 
             .vs-divider {
@@ -680,21 +682,22 @@
             }
 
             .countdown {
-                font-size: 7rem;
+                font-size: 8rem;
             }
 
             .winner-card-container {
-                padding: 3rem 2rem;
+                padding: 2rem 1.5rem;
             }
 
             .winner-photo-large {
-                width: 220px;
-                height: 220px;
-                font-size: 6rem;
+                width: 280px;
+                height: 280px;
+                font-size: 7rem;
             }
 
             .winner-name-display {
-                font-size: 2rem;
+                font-size: 1.75rem;
+                padding: 1rem 2rem;
             }
 
             .controls {
@@ -851,7 +854,7 @@
         }
 
         function createConfetti() {
-            const colors = ['#c9a961', '#e74c3c', '#3498db', '#ffffff', '#f39c12'];
+            const colors = ['#ffd700', '#00d4ff', '#0066ff', '#ffffff', '#ffed4e'];
 
             for (let i = 0; i < 120; i++) {
                 setTimeout(() => {
