@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amici - Sistema Card Sfide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .sfida-container {
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .vs-divider {
+            font-size: 4em;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 320px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            animation: slideIn 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4, #FFD93D);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+        }
+
+        .card.winner {
+            animation: winnerPulse 1s ease-in-out infinite;
+            border: 3px solid #FFD700;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .concorrente-tipo {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tipo-cantante {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+        }
+
+        .tipo-ballerino {
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            color: white;
+        }
+
+        .concorrente-nome {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .concorrente-squadra {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .controls {
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-sfida {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+        }
+
+        .btn-sfida:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(127, 140, 141, 0.4);
+        }
+
+        .btn-winner {
+            padding: 10px 25px;
+            font-size: 0.9em;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #333;
+        }
+
+        .btn-winner:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .winner-announcement {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .winner-announcement.show {
+            display: flex;
+        }
+
+        .winner-content {
+            background: white;
+            padding: 60px;
+            border-radius: 30px;
+            text-align: center;
+            animation: bounceIn 0.8s ease-out;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .winner-content h2 {
+            font-size: 3em;
+            color: #FFD700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .winner-content p {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes winnerPulse {
+            0%, 100% {
+                box-shadow: 0 0 20px #FFD700;
+            }
+            50% {
+                box-shadow: 0 0 40px #FFD700, 0 0 60px #FFD700;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .vs-divider {
+                font-size: 2em;
+            }
+
+            .card {
+                width: 280px;
+            }
+
+            .sfida-container {
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>AMICI - SFIDA</h1>
+        <p>Sistema Card Sfide</p>
+    </div>
+
+    <div class="sfida-container">
+        <div class="card" id="card1">
+            <div class="card-header">
+                <div class="concorrente-tipo tipo-cantante">Cantante</div>
+                <div class="concorrente-nome">Luca Rossi</div>
+                <div class="concorrente-squadra">Squadra Zerbi-Celentano</div>
+            </div>
+            <div class="avatar">🎤</div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Esibizioni</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Vittorie</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-winner" onclick="declareWinner(1)">Dichiara Vincitore</button>
+            </div>
+        </div>
+
+        <div class="vs-divider">VS</div>
+
+        <div class="card" id="card2">
+            <div class="card-header">
+                <div class="concorrente-tipo tipo-ballerino">Ballerino</div>
+                <div class="concorrente-nome">Maria Bianchi</div>
+                <div class="concorrente-squadra">Squadra Cuccarini-Lo</div>
+            </div>
+            <div class="avatar">💃</div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Esibizioni</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Vittorie</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-winner" onclick="declareWinner(2)">Dichiara Vincitore</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-sfida" onclick="startChallenge()">🎬 Inizia Sfida</button>
+        <button class="btn btn-reset" onclick="resetChallenge()">🔄 Reset</button>
+    </div>
+
+    <div class="winner-announcement" id="winnerModal">
+        <div class="winner-content">
+            <h2>🏆 VINCITORE 🏆</h2>
+            <p id="winnerName">Nome Concorrente</p>
+            <button class="btn btn-sfida" onclick="closeWinnerModal()">Chiudi</button>
+        </div>
+    </div>
+
+    <script>
+        let challengeActive = false;
+
+        function startChallenge() {
+            if (challengeActive) return;
+
+            challengeActive = true;
+            const cards = document.querySelectorAll('.card');
+
+            // Aggiungi animazione shake alle cards
+            cards.forEach(card => {
+                card.style.animation = 'none';
+                setTimeout(() => {
+                    card.style.animation = 'pulse 0.5s ease-in-out 3';
+                }, 10);
+            });
+
+            // Effetto sonoro simulato
+            playChallengeFanfare();
+        }
+
+        function declareWinner(cardNumber) {
+            const card = document.getElementById(`card${cardNumber}`);
+            const otherCard = document.getElementById(`card${cardNumber === 1 ? 2 : 1}`);
+            const winnerName = card.querySelector('.concorrente-nome').textContent;
+
+            // Rimuovi classe winner da tutte le card
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('winner'));
+
+            // Aggiungi classe winner alla card selezionata
+            card.classList.add('winner');
+
+            // Mostra annuncio vincitore
+            document.getElementById('winnerName').textContent = winnerName;
+            document.getElementById('winnerModal').classList.add('show');
+
+            // Crea confetti
+            createConfetti();
+
+            challengeActive = false;
+        }
+
+        function resetChallenge() {
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.remove('winner');
+            });
+            challengeActive = false;
+        }
+
+        function closeWinnerModal() {
+            document.getElementById('winnerModal').classList.remove('show');
+        }
+
+        function createConfetti() {
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#FFD93D', '#FF8E53'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        function playChallengeFanfare() {
+            // Simulazione effetto visivo invece di suono
+            const header = document.querySelector('.header h1');
+            const originalText = header.textContent;
+
+            let count = 0;
+            const interval = setInterval(() => {
+                header.style.transform = count % 2 === 0 ? 'scale(1.1)' : 'scale(1)';
+                count++;
+                if (count > 5) {
+                    clearInterval(interval);
+                    header.style.transform = 'scale(1)';
+                }
+            }, 200);
+        }
+
+        // Chiudi modal cliccando fuori
+        document.getElementById('winnerModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeWinnerModal();
+            }
+        });
+    </script>
+</body>
+</html>
