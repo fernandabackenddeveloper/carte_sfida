@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amici - Sistema Card Sfide</title>
+    <title>Amici - Sfida</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
         * {
             margin: 0;
@@ -13,330 +13,354 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --accent-gold: #d4af37;
+            --accent-red: #dc2626;
+            --accent-blue: #3b82f6;
+            --glow-gold: rgba(212, 175, 55, 0.3);
+        }
+
         body {
-            font-family: 'Roboto', sans-serif;
-            background: #0a0a0a;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
             min-height: 100vh;
             overflow: hidden;
             position: relative;
         }
 
-        /* Stage Background with animated gradient */
-        .stage-background {
+        /* Subtle background gradient */
+        .background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a0033, #000000);
+            background:
+                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+                var(--bg-dark);
             z-index: 0;
         }
 
-        .stage-background::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
             width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 80% 50%, rgba(255, 20, 147, 0.4) 0%, transparent 50%);
-            animation: backgroundPulse 4s ease-in-out infinite;
-        }
-
-        /* Spotlight effects */
-        .spotlight {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            pointer-events: none;
-            filter: blur(80px);
-            opacity: 0;
-            transition: all 1s ease;
-        }
-
-        .spotlight-left {
-            top: 30%;
-            left: 15%;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.6), transparent);
-        }
-
-        .spotlight-right {
-            top: 30%;
-            right: 15%;
-            background: radial-gradient(circle, rgba(255, 20, 147, 0.6), transparent);
-        }
-
-        .spotlight.active {
-            opacity: 1;
-            animation: spotlightPulse 2s ease-in-out infinite;
-        }
-
-        /* Particles */
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: particleFloat 3s ease-in-out infinite;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Header */
         .header {
-            position: relative;
-            z-index: 10;
+            padding: 3rem 4rem 2rem;
             text-align: center;
-            padding: 40px 20px 20px;
         }
 
         .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 5em;
-            font-weight: 900;
-            background: linear-gradient(45deg, #FFD700, #FFA500, #FF1493, #8A2BE2);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 3s ease infinite;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-            letter-spacing: 10px;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
         }
 
         .subtitle {
-            font-size: 1.5em;
-            color: #FFD700;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 5px;
-            opacity: 0.9;
         }
 
-        /* Arena - Main stage area */
+        /* Arena */
         .arena {
-            position: relative;
-            width: 100%;
-            height: 70vh;
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 2000px;
-            z-index: 5;
-        }
-
-        .battle-zone {
             position: relative;
-            width: 900px;
-            height: 500px;
-            transform-style: preserve-3d;
+            padding: 2rem;
         }
 
-        /* VS Logo in center */
-        .vs-logo {
+        .stage {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 600px;
+        }
+
+        /* Battle circle - orbit container */
+        .battle-circle {
             position: absolute;
             top: 50%;
             left: 50%;
+            width: 700px;
+            height: 700px;
             transform: translate(-50%, -50%);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 8em;
-            font-weight: 900;
-            color: #FFD700;
-            text-shadow:
-                0 0 20px #FFD700,
-                0 0 40px #FFD700,
-                0 0 60px #FFA500,
-                0 0 80px #FF1493;
-            z-index: 100;
-            opacity: 0;
-            animation: vsEntrance 1s ease-out 0.5s forwards;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Cards */
-        .card-wrapper {
+        /* Card containers that orbit */
+        .card-orbit {
             position: absolute;
-            width: 350px;
+            top: 50%;
+            left: 50%;
+            width: 340px;
             height: 480px;
-            transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform-style: preserve-3d;
+            margin-left: -170px;
+            margin-top: -240px;
+            transform-origin: 170px 240px;
         }
 
-        .card-wrapper.left {
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%) translateZ(0);
+        .card-orbit.left {
+            transform: rotate(0deg) translateX(-350px) rotate(0deg);
         }
 
-        .card-wrapper.right {
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%) translateZ(0);
+        .card-orbit.right {
+            transform: rotate(0deg) translateX(350px) rotate(0deg);
         }
 
-        /* Battle animation - cards rotate clockwise */
-        .card-wrapper.battle {
-            animation: cardBattle 3s ease-in-out forwards;
+        /* Battle animation - cards orbit around center */
+        .battle-circle.battling .card-orbit.left {
+            animation: orbitLeft 4s ease-in-out;
         }
 
-        .card-wrapper.left.battle {
-            animation: cardBattleLeft 3s ease-in-out forwards;
+        .battle-circle.battling .card-orbit.right {
+            animation: orbitRight 4s ease-in-out;
         }
 
-        .card-wrapper.right.battle {
-            animation: cardBattleRight 3s ease-in-out forwards;
+        @keyframes orbitLeft {
+            0% { transform: rotate(0deg) translateX(-350px) rotate(0deg); }
+            25% { transform: rotate(90deg) translateX(-350px) rotate(-90deg); }
+            50% { transform: rotate(180deg) translateX(-350px) rotate(-180deg); }
+            75% { transform: rotate(270deg) translateX(-350px) rotate(-270deg); }
+            100% { transform: rotate(360deg) translateX(-350px) rotate(-360deg); }
+        }
+
+        @keyframes orbitRight {
+            0% { transform: rotate(0deg) translateX(350px) rotate(0deg); }
+            25% { transform: rotate(90deg) translateX(350px) rotate(-90deg); }
+            50% { transform: rotate(180deg) translateX(350px) rotate(-180deg); }
+            75% { transform: rotate(270deg) translateX(350px) rotate(-270deg); }
+            100% { transform: rotate(360deg) translateX(350px) rotate(-360deg); }
         }
 
         /* Winner animation */
-        .card-wrapper.winner {
-            animation: winnerReveal 2s ease-out forwards !important;
-            z-index: 200 !important;
+        .card-orbit.winner {
+            animation: moveToCenter 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+            z-index: 100;
         }
 
-        .card-wrapper.loser {
-            animation: loserFadeOut 2s ease-out forwards !important;
-            z-index: 1 !important;
+        .card-orbit.loser {
+            animation: fadeAway 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+            z-index: 1;
         }
 
+        @keyframes moveToCenter {
+            to {
+                transform: translate(-50%, -50%) scale(1.1);
+                left: 50%;
+                top: 50%;
+                margin: 0;
+            }
+        }
+
+        @keyframes fadeAway {
+            to {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        /* Card design */
         .card {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border-radius: 25px;
-            padding: 30px;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.8),
-                0 0 0 2px rgba(255, 215, 0, 0.3),
-                inset 0 0 60px rgba(255, 215, 0, 0.1);
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(255, 215, 0, 0.1),
-                transparent
-            );
-            transform: rotate(45deg);
-            animation: cardShine 3s ease-in-out infinite;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
         }
 
-        .card.winner-card {
+        /* Winner card glow */
+        .card.winner-glow {
+            border-color: var(--accent-gold);
             box-shadow:
-                0 0 40px #FFD700,
-                0 0 80px #FFD700,
-                0 0 120px #FFA500,
-                0 20px 60px rgba(0, 0, 0, 0.8);
-            animation: winnerGlow 1s ease-in-out infinite;
+                0 0 0 1px var(--accent-gold),
+                0 0 60px var(--glow-gold),
+                0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        /* Card content */
+        /* Card header */
+        .card-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
         .card-badge {
             display: inline-block;
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-size: 0.9em;
-            font-weight: bold;
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1.5rem;
         }
 
         .badge-cantante {
-            background: linear-gradient(135deg, #FF416C, #FF4B2B);
+            background: var(--accent-red);
             color: white;
         }
 
         .badge-ballerino {
-            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            background: var(--accent-blue);
             color: white;
         }
 
         .card-name {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2.5em;
+            font-size: 2rem;
             font-weight: 700;
-            color: #FFD700;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
-            line-height: 1.2;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
         }
 
         .card-team {
-            font-size: 1.1em;
-            color: #a0a0a0;
-            margin-bottom: 30px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
 
+        /* Avatar */
         .card-avatar {
-            width: 180px;
-            height: 180px;
-            margin: 20px auto;
+            width: 160px;
+            height: 160px;
+            margin: 2rem auto;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border: 1px solid var(--border-subtle);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5em;
-            box-shadow:
-                0 10px 40px rgba(0, 0, 0, 0.5),
-                inset 0 0 30px rgba(255, 255, 255, 0.1);
+            font-size: 4rem;
             position: relative;
         }
 
-        .card-avatar::after {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            background: linear-gradient(45deg, #FFD700, #FF1493) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
+        .card.winner-glow .card-avatar {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 30px var(--glow-gold);
         }
 
-        .card.winner-card .card-avatar::after {
-            opacity: 1;
-            animation: ringRotate 2s linear infinite;
+        .card.winner-glow .card-avatar::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(45deg, var(--accent-gold), transparent, var(--accent-gold));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        /* VS divider */
+        .vs-divider {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            opacity: 0.4;
+            letter-spacing: 0.1em;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        /* Countdown */
+        .countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 200;
+            text-shadow: 0 0 60px var(--glow-gold);
+        }
+
+        .countdown.show {
+            animation: countdownPulse 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes countdownPulse {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
         }
 
         /* Controls */
         .controls {
+            padding: 2rem 4rem 3rem;
+            text-align: center;
             position: relative;
             z-index: 10;
-            text-align: center;
-            padding: 20px;
         }
 
         .btn {
-            padding: 20px 50px;
-            font-size: 1.3em;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 10px;
+            padding: 1rem 2.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            transition: all 0.3s ease;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 0.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -348,10 +372,10 @@
             left: 50%;
             width: 0;
             height: 0;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
             transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+            transition: width 0.5s, height 0.5s;
         }
 
         .btn:hover::before {
@@ -359,285 +383,51 @@
             height: 300px;
         }
 
-        .btn-start {
-            background: linear-gradient(135deg, #FF416C, #FF4B2B);
-            color: white;
-            box-shadow: 0 10px 40px rgba(255, 65, 108, 0.5);
+        .btn-primary {
+            background: var(--accent-gold);
+            color: var(--bg-dark);
         }
 
-        .btn-start:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(255, 65, 108, 0.7);
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--glow-gold);
         }
 
-        .btn-start:disabled {
+        .btn-primary:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
-        .btn-reset {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
         }
 
-        .btn-reset:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.7);
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
-        /* Countdown */
-        .countdown {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 15em;
-            font-weight: 900;
-            color: #FFD700;
-            text-shadow:
-                0 0 40px #FFD700,
-                0 0 80px #FFA500,
-                0 0 120px #FF1493;
-            z-index: 300;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .countdown.show {
-            animation: countdownPulse 1s ease-in-out;
-        }
-
-        /* Winner announcement */
-        .winner-announcement {
+        /* Winner modal */
+        .winner-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            backdrop-filter: blur(10px);
         }
 
-        .winner-announcement.show {
+        .winner-modal.show {
             display: flex;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .winner-content {
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        .winner-trophy {
-            font-size: 10em;
-            animation: trophyBounce 1s ease-in-out infinite;
-            filter: drop-shadow(0 0 30px #FFD700);
-        }
-
-        .winner-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 5em;
-            font-weight: 900;
-            background: linear-gradient(45deg, #FFD700, #FFA500, #FF1493);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 2s ease infinite;
-            margin: 30px 0;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-        }
-
-        .winner-name {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 4em;
-            font-weight: 700;
-            color: white;
-            margin: 20px 0;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-        }
-
-        /* Confetti */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #FFD700;
-            z-index: 999;
-        }
-
-        /* Fireworks */
-        .firework {
-            position: fixed;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            z-index: 999;
-        }
-
-        /* Animations */
-        @keyframes backgroundPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        @keyframes spotlightPulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.6;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 1;
-            }
-        }
-
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(50px);
-                opacity: 0;
-            }
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes vsEntrance {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0) rotate(180deg);
-            }
-            70% {
-                transform: translate(-50%, -50%) scale(1.2) rotate(-10deg);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1) rotate(0deg);
-            }
-        }
-
-        @keyframes cardShine {
-            0% { transform: rotate(45deg) translateX(-100%); }
-            100% { transform: rotate(45deg) translateX(100%); }
-        }
-
-        @keyframes cardBattleLeft {
-            0% {
-                transform: translateY(-50%) translateZ(0) rotateY(0deg);
-            }
-            25% {
-                transform: translateY(-50%) translateX(200px) translateZ(100px) rotateY(20deg) scale(1.1);
-            }
-            50% {
-                transform: translateY(-50%) translateX(300px) translateZ(0) rotateY(0deg) scale(1);
-            }
-            75% {
-                transform: translateY(-50%) translateX(200px) translateZ(-100px) rotateY(-20deg) scale(0.9);
-            }
-            100% {
-                transform: translateY(-50%) translateZ(0) rotateY(0deg);
-            }
-        }
-
-        @keyframes cardBattleRight {
-            0% {
-                transform: translateY(-50%) translateZ(0) rotateY(0deg);
-            }
-            25% {
-                transform: translateY(-50%) translateX(-200px) translateZ(100px) rotateY(-20deg) scale(1.1);
-            }
-            50% {
-                transform: translateY(-50%) translateX(-300px) translateZ(0) rotateY(0deg) scale(1);
-            }
-            75% {
-                transform: translateY(-50%) translateX(-200px) translateZ(-100px) rotateY(20deg) scale(0.9);
-            }
-            100% {
-                transform: translateY(-50%) translateZ(0) rotateY(0deg);
-            }
-        }
-
-        @keyframes winnerReveal {
-            0% {
-                transform: translateY(-50%) translateZ(0) scale(1);
-            }
-            50% {
-                transform: translateY(-50%) translateZ(200px) scale(1.3) rotateY(360deg);
-            }
-            100% {
-                transform: translate(-50%, -50%) translateZ(0) scale(1.2);
-                left: 50%;
-                top: 50%;
-            }
-        }
-
-        @keyframes loserFadeOut {
-            0% {
-                opacity: 1;
-                transform: translateY(-50%) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-50%) scale(0.5) translateZ(-500px);
-            }
-        }
-
-        @keyframes winnerGlow {
-            0%, 100% {
-                box-shadow:
-                    0 0 40px #FFD700,
-                    0 0 80px #FFD700,
-                    0 0 120px #FFA500,
-                    0 20px 60px rgba(0, 0, 0, 0.8);
-            }
-            50% {
-                box-shadow:
-                    0 0 60px #FFD700,
-                    0 0 120px #FFD700,
-                    0 0 180px #FFA500,
-                    0 20px 60px rgba(0, 0, 0, 0.8);
-            }
-        }
-
-        @keyframes ringRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes countdownPulse {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0);
-            }
-            50% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.8);
-            }
+            animation: fadeIn 0.4s ease-out;
         }
 
         @keyframes fadeIn {
@@ -645,137 +435,262 @@
             to { opacity: 1; }
         }
 
-        @keyframes trophyBounce {
+        .winner-content {
+            text-align: center;
+            position: relative;
+        }
+
+        .trophy {
+            font-size: 8rem;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 40px var(--glow-gold));
+        }
+
+        @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .winner-title {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .winner-name {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            margin-bottom: 3rem;
+            text-shadow: 0 0 60px var(--glow-gold);
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            z-index: 999;
         }
 
         @keyframes confettiFall {
             to {
-                transform: translateY(100vh) rotate(720deg);
+                transform: translateY(100vh) rotate(360deg);
                 opacity: 0;
             }
         }
 
-        @keyframes fireworkExplode {
-            0% {
-                transform: translate(0, 0);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--x), var(--y));
-                opacity: 0;
-            }
-        }
-
+        /* Responsive */
         @media (max-width: 1024px) {
-            .logo { font-size: 3em; }
-            .battle-zone { width: 700px; height: 400px; }
-            .card-wrapper { width: 280px; height: 380px; }
-            .vs-logo { font-size: 5em; }
-            .card-name { font-size: 2em; }
-            .card-avatar { width: 140px; height: 140px; font-size: 4em; }
+            .battle-circle {
+                width: 600px;
+                height: 600px;
+            }
+
+            .card-orbit.left {
+                transform: rotate(0deg) translateX(-300px) rotate(0deg);
+            }
+
+            .card-orbit.right {
+                transform: rotate(0deg) translateX(300px) rotate(0deg);
+            }
+
+            @keyframes orbitLeft {
+                0% { transform: rotate(0deg) translateX(-300px) rotate(0deg); }
+                25% { transform: rotate(90deg) translateX(-300px) rotate(-90deg); }
+                50% { transform: rotate(180deg) translateX(-300px) rotate(-180deg); }
+                75% { transform: rotate(270deg) translateX(-300px) rotate(-270deg); }
+                100% { transform: rotate(360deg) translateX(-300px) rotate(-360deg); }
+            }
+
+            @keyframes orbitRight {
+                0% { transform: rotate(0deg) translateX(300px) rotate(0deg); }
+                25% { transform: rotate(90deg) translateX(300px) rotate(-90deg); }
+                50% { transform: rotate(180deg) translateX(300px) rotate(-180deg); }
+                75% { transform: rotate(270deg) translateX(300px) rotate(-270deg); }
+                100% { transform: rotate(360deg) translateX(300px) rotate(-360deg); }
+            }
+
+            .card-orbit {
+                width: 300px;
+                height: 420px;
+                margin-left: -150px;
+                margin-top: -210px;
+            }
+
+            .card-name {
+                font-size: 1.75rem;
+            }
+
+            .countdown {
+                font-size: 8rem;
+            }
         }
 
         @media (max-width: 768px) {
-            .logo { font-size: 2.5em; letter-spacing: 5px; }
-            .subtitle { font-size: 1em; }
-            .battle-zone { width: 100%; height: 500px; }
-            .card-wrapper { width: 250px; height: 350px; }
-            .card { padding: 20px; }
-            .vs-logo { font-size: 4em; }
-            .card-name { font-size: 1.5em; }
-            .card-avatar { width: 100px; height: 100px; font-size: 3em; }
-            .btn { padding: 15px 35px; font-size: 1em; }
-            .countdown { font-size: 10em; }
-            .winner-title { font-size: 3em; }
-            .winner-name { font-size: 2.5em; }
+            .header {
+                padding: 2rem 2rem 1rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .battle-circle {
+                width: 400px;
+                height: 400px;
+            }
+
+            .card-orbit {
+                width: 260px;
+                height: 360px;
+                margin-left: -130px;
+                margin-top: -180px;
+            }
+
+            .card-orbit.left {
+                transform: rotate(0deg) translateX(-200px) rotate(0deg);
+            }
+
+            .card-orbit.right {
+                transform: rotate(0deg) translateX(200px) rotate(0deg);
+            }
+
+            @keyframes orbitLeft {
+                0% { transform: rotate(0deg) translateX(-200px) rotate(0deg); }
+                25% { transform: rotate(90deg) translateX(-200px) rotate(-90deg); }
+                50% { transform: rotate(180deg) translateX(-200px) rotate(-180deg); }
+                75% { transform: rotate(270deg) translateX(-200px) rotate(-270deg); }
+                100% { transform: rotate(360deg) translateX(-200px) rotate(-360deg); }
+            }
+
+            @keyframes orbitRight {
+                0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+                25% { transform: rotate(90deg) translateX(200px) rotate(-90deg); }
+                50% { transform: rotate(180deg) translateX(200px) rotate(-180deg); }
+                75% { transform: rotate(270deg) translateX(200px) rotate(-270deg); }
+                100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+            }
+
+            .card {
+                padding: 2rem 1.5rem;
+            }
+
+            .card-name {
+                font-size: 1.5rem;
+            }
+
+            .card-avatar {
+                width: 120px;
+                height: 120px;
+                font-size: 3rem;
+            }
+
+            .vs-divider {
+                font-size: 2rem;
+            }
+
+            .countdown {
+                font-size: 6rem;
+            }
+
+            .winner-name {
+                font-size: 2.5rem;
+            }
+
+            .trophy {
+                font-size: 5rem;
+            }
+
+            .controls {
+                padding: 1.5rem 2rem 2rem;
+            }
+
+            .btn {
+                padding: 0.875rem 2rem;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Stage Background -->
-    <div class="stage-background"></div>
+    <!-- Background -->
+    <div class="background"></div>
 
-    <!-- Spotlights -->
-    <div class="spotlight spotlight-left"></div>
-    <div class="spotlight spotlight-right"></div>
+    <!-- Main container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo">Amici</h1>
+            <p class="subtitle">La Sfida</p>
+        </header>
 
-    <!-- Header -->
-    <div class="header">
-        <div class="logo">AMICI</div>
-        <div class="subtitle">Serale - La Sfida</div>
-    </div>
+        <!-- Arena -->
+        <div class="arena">
+            <div class="stage">
+                <!-- Battle circle -->
+                <div class="battle-circle" id="battleCircle">
+                    <!-- VS divider -->
+                    <div class="vs-divider">VS</div>
 
-    <!-- Main Arena -->
-    <div class="arena">
-        <div class="battle-zone">
-            <!-- VS Logo -->
-            <div class="vs-logo">VS</div>
+                    <!-- Card 1 -->
+                    <div class="card-orbit left" id="cardOrbit1">
+                        <div class="card" id="card1">
+                            <div class="card-header">
+                                <div class="card-badge badge-cantante">Cantante</div>
+                                <h2 class="card-name">Luca Rossi</h2>
+                                <p class="card-team">Squadra Zerbi-Celentano</p>
+                            </div>
+                            <div class="card-avatar">🎤</div>
+                        </div>
+                    </div>
 
-            <!-- Card Left -->
-            <div class="card-wrapper left" id="cardWrapper1">
-                <div class="card" id="card1">
-                    <div class="card-badge badge-cantante">Cantante</div>
-                    <div class="card-name">Luca Rossi</div>
-                    <div class="card-team">Squadra Zerbi-Celentano</div>
-                    <div class="card-avatar">🎤</div>
+                    <!-- Card 2 -->
+                    <div class="card-orbit right" id="cardOrbit2">
+                        <div class="card" id="card2">
+                            <div class="card-header">
+                                <div class="card-badge badge-ballerino">Ballerino</div>
+                                <h2 class="card-name">Maria Bianchi</h2>
+                                <p class="card-team">Squadra Cuccarini-Lo</p>
+                            </div>
+                            <div class="card-avatar">💃</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Card Right -->
-            <div class="card-wrapper right" id="cardWrapper2">
-                <div class="card" id="card2">
-                    <div class="card-badge badge-ballerino">Ballerino</div>
-                    <div class="card-name">Maria Bianchi</div>
-                    <div class="card-team">Squadra Cuccarini-Lo</div>
-                    <div class="card-avatar">💃</div>
-                </div>
+                <!-- Countdown -->
+                <div class="countdown" id="countdown"></div>
             </div>
+        </div>
 
-            <!-- Countdown -->
-            <div class="countdown" id="countdown"></div>
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn btn-primary" id="startBtn" onclick="startChallenge()">
+                Inizia Sfida
+            </button>
+            <button class="btn btn-secondary" onclick="resetChallenge()">
+                Reset
+            </button>
         </div>
     </div>
 
-    <!-- Controls -->
-    <div class="controls">
-        <button class="btn btn-start" id="startBtn" onclick="startChallenge()">
-            ▶ Inizia Sfida
-        </button>
-        <button class="btn btn-reset" onclick="resetChallenge()">
-            🔄 Reset
-        </button>
-    </div>
-
-    <!-- Winner Announcement -->
-    <div class="winner-announcement" id="winnerModal">
+    <!-- Winner modal -->
+    <div class="winner-modal" id="winnerModal">
         <div class="winner-content">
-            <div class="winner-trophy">🏆</div>
-            <div class="winner-title">Vincitore</div>
-            <div class="winner-name" id="winnerName"></div>
-            <button class="btn btn-start" onclick="closeWinner()" style="margin-top: 40px;">
-                Chiudi
-            </button>
+            <div class="trophy">🏆</div>
+            <p class="winner-title">Vincitore</p>
+            <h2 class="winner-name" id="winnerName"></h2>
+            <button class="btn btn-primary" onclick="closeModal()">Chiudi</button>
         </div>
     </div>
 
     <script>
         let isRunning = false;
 
-        // Create floating particles
-        function createParticles() {
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 3 + 's';
-                particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                document.body.appendChild(particle);
-            }
-        }
-
-        // Start challenge sequence
         async function startChallenge() {
             if (isRunning) return;
             isRunning = true;
@@ -783,179 +698,115 @@
             const startBtn = document.getElementById('startBtn');
             startBtn.disabled = true;
 
-            // Activate spotlights
-            document.querySelectorAll('.spotlight').forEach(s => s.classList.add('active'));
+            const battleCircle = document.getElementById('battleCircle');
 
-            // Wait for VS animation
-            await sleep(1500);
+            // Wait a moment
+            await sleep(500);
 
-            // Start card battle animation
-            document.getElementById('cardWrapper1').classList.add('battle');
-            document.getElementById('cardWrapper2').classList.add('battle');
+            // Start battle animation (cards orbit)
+            battleCircle.classList.add('battling');
 
-            // Battle duration
-            await sleep(3000);
+            // Battle duration - 4 seconds for smooth orbit
+            await sleep(4000);
 
-            // Remove battle animation
-            document.getElementById('cardWrapper1').classList.remove('battle');
-            document.getElementById('cardWrapper2').classList.remove('battle');
+            // Remove battle class
+            battleCircle.classList.remove('battling');
 
-            // Countdown sequence
+            // Countdown
             await showCountdown(3);
             await showCountdown(2);
             await showCountdown(1);
 
-            // Determine random winner
-            const winnerNumber = Math.random() > 0.5 ? 1 : 2;
-            const loserNumber = winnerNumber === 1 ? 2 : 1;
+            // Determine winner randomly
+            const winnerNum = Math.random() > 0.5 ? 1 : 2;
+            const loserNum = winnerNum === 1 ? 2 : 1;
 
             // Reveal winner
-            await revealWinner(winnerNumber, loserNumber);
+            await revealWinner(winnerNum, loserNum);
         }
 
-        // Show countdown number
-        function showCountdown(number) {
+        function showCountdown(num) {
             return new Promise(resolve => {
                 const countdown = document.getElementById('countdown');
-                countdown.textContent = number;
+                countdown.textContent = num;
                 countdown.classList.add('show');
 
                 setTimeout(() => {
                     countdown.classList.remove('show');
-                    setTimeout(resolve, 200);
-                }, 800);
+                    setTimeout(resolve, 100);
+                }, 700);
             });
         }
 
-        // Reveal winner
         async function revealWinner(winnerNum, loserNum) {
-            const winnerWrapper = document.getElementById('cardWrapper' + winnerNum);
-            const loserWrapper = document.getElementById('cardWrapper' + loserNum);
+            const winnerOrbit = document.getElementById('cardOrbit' + winnerNum);
+            const loserOrbit = document.getElementById('cardOrbit' + loserNum);
             const winnerCard = document.getElementById('card' + winnerNum);
 
-            // Animate cards
-            winnerWrapper.classList.add('winner');
-            loserWrapper.classList.add('loser');
-            winnerCard.classList.add('winner-card');
+            // Animate
+            winnerOrbit.classList.add('winner');
+            loserOrbit.classList.add('loser');
+            winnerCard.classList.add('winner-glow');
 
-            // Create confetti
-            createConfetti();
+            await sleep(1500);
 
-            // Create fireworks
-            createFireworks();
-
-            await sleep(2000);
-
-            // Show winner announcement
+            // Show modal
             const winnerName = winnerCard.querySelector('.card-name').textContent;
             document.getElementById('winnerName').textContent = winnerName;
             document.getElementById('winnerModal').classList.add('show');
 
-            // Continue confetti
-            setInterval(() => {
-                if (document.getElementById('winnerModal').classList.contains('show')) {
-                    createConfetti();
-                }
-            }, 500);
+            // Create confetti
+            createConfetti();
         }
 
-        // Create confetti effect
         function createConfetti() {
-            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#FFD93D', '#FF8E53', '#FF1493', '#8A2BE2'];
+            const colors = ['#d4af37', '#dc2626', '#3b82f6', '#ffffff'];
 
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 80; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement('div');
                     confetti.className = 'confetti';
                     confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.top = -10 + 'px';
+                    confetti.style.top = '-10px';
                     confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.width = (Math.random() * 8 + 4) + 'px';
-                    confetti.style.height = (Math.random() * 8 + 4) + 'px';
                     confetti.style.animation = `confettiFall ${Math.random() * 2 + 2}s linear forwards`;
                     document.body.appendChild(confetti);
 
                     setTimeout(() => confetti.remove(), 4000);
-                }, i * 20);
+                }, i * 30);
             }
         }
 
-        // Create fireworks effect
-        function createFireworks() {
-            const colors = ['#FFD700', '#FF1493', '#4ECDC4', '#FF8E53', '#8A2BE2'];
-
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const x = Math.random() * window.innerWidth;
-                    const y = Math.random() * window.innerHeight * 0.5;
-
-                    for (let j = 0; j < 30; j++) {
-                        const firework = document.createElement('div');
-                        firework.className = 'firework';
-                        firework.style.left = x + 'px';
-                        firework.style.top = y + 'px';
-                        firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-
-                        const angle = (Math.PI * 2 * j) / 30;
-                        const velocity = Math.random() * 100 + 50;
-                        const dx = Math.cos(angle) * velocity;
-                        const dy = Math.sin(angle) * velocity;
-
-                        firework.style.setProperty('--x', dx + 'px');
-                        firework.style.setProperty('--y', dy + 'px');
-                        firework.style.animation = `fireworkExplode 1s ease-out forwards`;
-
-                        document.body.appendChild(firework);
-                        setTimeout(() => firework.remove(), 1000);
-                    }
-                }, i * 300);
-            }
-        }
-
-        // Reset challenge
         function resetChallenge() {
             isRunning = false;
 
-            // Reset buttons
             document.getElementById('startBtn').disabled = false;
+            document.getElementById('battleCircle').classList.remove('battling');
 
-            // Deactivate spotlights
-            document.querySelectorAll('.spotlight').forEach(s => s.classList.remove('active'));
-
-            // Reset cards
-            document.querySelectorAll('.card-wrapper').forEach(wrapper => {
-                wrapper.classList.remove('battle', 'winner', 'loser');
-                wrapper.style.cssText = '';
+            document.querySelectorAll('.card-orbit').forEach(orbit => {
+                orbit.classList.remove('winner', 'loser');
             });
 
             document.querySelectorAll('.card').forEach(card => {
-                card.classList.remove('winner-card');
+                card.classList.remove('winner-glow');
             });
 
-            // Close modal
             document.getElementById('winnerModal').classList.remove('show');
-
-            // Remove particles and confetti
-            document.querySelectorAll('.confetti, .firework').forEach(el => el.remove());
+            document.querySelectorAll('.confetti').forEach(c => c.remove());
         }
 
-        // Close winner modal
-        function closeWinner() {
+        function closeModal() {
             document.getElementById('winnerModal').classList.remove('show');
         }
 
-        // Utility sleep function
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
-        // Initialize
-        createParticles();
-
         // Close modal on background click
         document.getElementById('winnerModal').addEventListener('click', function(e) {
             if (e.target === this) {
-                closeWinner();
+                closeModal();
             }
         });
     </script>
