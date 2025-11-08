@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amici - Sfida</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
 
         * {
             margin: 0;
@@ -14,15 +14,15 @@
         }
 
         :root {
-            --bg-dark: #0a0a0a;
-            --bg-card: #1a1a1a;
-            --border-subtle: rgba(255, 255, 255, 0.08);
+            --bg-dark: #000000;
+            --bg-card: #0f0f0f;
+            --border-subtle: rgba(255, 255, 255, 0.06);
             --text-primary: #ffffff;
-            --text-secondary: #9ca3af;
-            --accent-gold: #d4af37;
-            --accent-red: #dc2626;
-            --accent-blue: #3b82f6;
-            --glow-gold: rgba(212, 175, 55, 0.3);
+            --text-secondary: #888888;
+            --accent-gold: #c9a961;
+            --accent-red: #e74c3c;
+            --accent-blue: #3498db;
+            --glow-gold: rgba(201, 169, 97, 0.4);
         }
 
         body {
@@ -32,6 +32,8 @@
             min-height: 100vh;
             overflow: hidden;
             position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .background {
@@ -41,8 +43,8 @@
             width: 100%;
             height: 100%;
             background:
-                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 30% 40%, rgba(201, 169, 97, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(52, 152, 219, 0.02) 0%, transparent 50%),
                 var(--bg-dark);
             z-index: 0;
         }
@@ -57,23 +59,23 @@
         }
 
         .header {
-            padding: 3rem 4rem 2rem;
+            padding: 4rem 4rem 3rem;
             text-align: center;
         }
 
         .logo {
-            font-size: 2.5rem;
-            font-weight: 800;
-            letter-spacing: 0.2em;
+            font-size: 3rem;
+            font-weight: 200;
+            letter-spacing: 0.3em;
             color: var(--text-primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             text-transform: uppercase;
         }
 
         .subtitle {
-            font-size: 0.875rem;
-            font-weight: 500;
-            letter-spacing: 0.15em;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
             color: var(--text-secondary);
             text-transform: uppercase;
         }
@@ -90,113 +92,114 @@
         .stage {
             position: relative;
             width: 100%;
-            max-width: 1200px;
-            height: 600px;
-            perspective: 1500px;
+            max-width: 1400px;
+            height: 700px;
+            perspective: 2000px;
         }
 
         .battle-circle {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 900px;
-            height: 600px;
+            width: 1000px;
+            height: 700px;
             transform: translate(-50%, -50%);
             transform-style: preserve-3d;
         }
 
-        /* Ellipse animation - cards move horizontally, one passes in front */
         .card-orbit {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 340px;
-            height: 480px;
-            margin-left: -170px;
-            margin-top: -240px;
+            width: 380px;
+            height: 520px;
+            margin-left: -190px;
+            margin-top: -260px;
             transform-style: preserve-3d;
-            transition: z-index 0.1s step-end;
+            will-change: transform;
         }
 
         .card-orbit.left {
-            transform: translate3d(-400px, 0, 0);
-            z-index: 10;
+            transform: translate3d(-450px, 0, 0);
         }
 
         .card-orbit.right {
-            transform: translate3d(400px, 0, 0);
-            z-index: 10;
+            transform: translate3d(450px, 0, 0);
         }
 
-        /* Ellipse battle animation */
+        /* Smooth 15-second ellipse animation with many keyframes for fluid motion */
         .battle-circle.battling .card-orbit.left {
-            animation: ellipseLeft 5s ease-in-out;
+            animation: ellipseLeftSmooth 15s linear infinite;
         }
 
         .battle-circle.battling .card-orbit.right {
-            animation: ellipseRight 5s ease-in-out;
+            animation: ellipseRightSmooth 15s linear infinite;
         }
 
-        @keyframes ellipseLeft {
-            0% {
-                transform: translate3d(-400px, 0, 0);
-                z-index: 10;
-            }
-            25% {
-                transform: translate3d(0, -80px, 250px);
-                z-index: 50;
-            }
-            50% {
-                transform: translate3d(400px, 0, 0);
-                z-index: 10;
-            }
-            75% {
-                transform: translate3d(0, 80px, -250px);
-                z-index: 5;
-            }
-            100% {
-                transform: translate3d(-400px, 0, 0);
-                z-index: 10;
-            }
+        /* Ultra-smooth left card ellipse - 20 keyframes for perfect fluidity */
+        @keyframes ellipseLeftSmooth {
+            0% { transform: translate3d(-450px, 0px, 0px); z-index: 10; }
+            5% { transform: translate3d(-360px, -35px, 80px); z-index: 15; }
+            10% { transform: translate3d(-260px, -65px, 150px); z-index: 25; }
+            15% { transform: translate3d(-150px, -85px, 200px); z-index: 35; }
+            20% { transform: translate3d(-40px, -95px, 230px); z-index: 45; }
+            25% { transform: translate3d(70px, -100px, 250px); z-index: 50; }
+            30% { transform: translate3d(180px, -95px, 230px); z-index: 45; }
+            35% { transform: translate3d(280px, -85px, 200px); z-index: 35; }
+            40% { transform: translate3d(370px, -65px, 150px); z-index: 25; }
+            45% { transform: translate3d(430px, -35px, 80px); z-index: 15; }
+            50% { transform: translate3d(450px, 0px, 0px); z-index: 10; }
+            55% { transform: translate3d(430px, 35px, -80px); z-index: 5; }
+            60% { transform: translate3d(370px, 65px, -150px); z-index: 3; }
+            65% { transform: translate3d(280px, 85px, -200px); z-index: 2; }
+            70% { transform: translate3d(180px, 95px, -230px); z-index: 1; }
+            75% { transform: translate3d(70px, 100px, -250px); z-index: 1; }
+            80% { transform: translate3d(-40px, 95px, -230px); z-index: 2; }
+            85% { transform: translate3d(-150px, 85px, -200px); z-index: 3; }
+            90% { transform: translate3d(-260px, 65px, -150px); z-index: 5; }
+            95% { transform: translate3d(-360px, 35px, -80px); z-index: 8; }
+            100% { transform: translate3d(-450px, 0px, 0px); z-index: 10; }
         }
 
-        @keyframes ellipseRight {
-            0% {
-                transform: translate3d(400px, 0, 0);
-                z-index: 10;
-            }
-            25% {
-                transform: translate3d(0, 80px, -250px);
-                z-index: 5;
-            }
-            50% {
-                transform: translate3d(-400px, 0, 0);
-                z-index: 10;
-            }
-            75% {
-                transform: translate3d(0, -80px, 250px);
-                z-index: 50;
-            }
-            100% {
-                transform: translate3d(400px, 0, 0);
-                z-index: 10;
-            }
+        /* Ultra-smooth right card ellipse - opposite phase */
+        @keyframes ellipseRightSmooth {
+            0% { transform: translate3d(450px, 0px, 0px); z-index: 10; }
+            5% { transform: translate3d(430px, 35px, -80px); z-index: 5; }
+            10% { transform: translate3d(370px, 65px, -150px); z-index: 3; }
+            15% { transform: translate3d(280px, 85px, -200px); z-index: 2; }
+            20% { transform: translate3d(180px, 95px, -230px); z-index: 1; }
+            25% { transform: translate3d(70px, 100px, -250px); z-index: 1; }
+            30% { transform: translate3d(-40px, 95px, -230px); z-index: 2; }
+            35% { transform: translate3d(-150px, 85px, -200px); z-index: 3; }
+            40% { transform: translate3d(-260px, 65px, -150px); z-index: 5; }
+            45% { transform: translate3d(-360px, 35px, -80px); z-index: 8; }
+            50% { transform: translate3d(-450px, 0px, 0px); z-index: 10; }
+            55% { transform: translate3d(-360px, -35px, 80px); z-index: 15; }
+            60% { transform: translate3d(-260px, -65px, 150px); z-index: 25; }
+            65% { transform: translate3d(-150px, -85px, 200px); z-index: 35; }
+            70% { transform: translate3d(-40px, -95px, 230px); z-index: 45; }
+            75% { transform: translate3d(70px, -100px, 250px); z-index: 50; }
+            80% { transform: translate3d(180px, -95px, 230px); z-index: 45; }
+            85% { transform: translate3d(280px, -85px, 200px); z-index: 35; }
+            90% { transform: translate3d(370px, -65px, 150px); z-index: 25; }
+            95% { transform: translate3d(430px, -35px, 80px); z-index: 15; }
+            100% { transform: translate3d(450px, 0px, 0px); z-index: 10; }
         }
 
         /* Winner animation */
         .card-orbit.winner {
-            animation: winnerReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+            animation: winnerReveal 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
             z-index: 100 !important;
         }
 
         .card-orbit.loser {
-            animation: loserFadeOut 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+            animation: loserFadeOut 2s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
             z-index: 1 !important;
         }
 
         @keyframes winnerReveal {
             to {
-                transform: translate(-50%, -50%) scale(1.15);
+                transform: translate(-50%, -50%) scale(1.1);
                 left: 50%;
                 top: 50%;
                 margin: 0;
@@ -206,21 +209,23 @@
         @keyframes loserFadeOut {
             to {
                 opacity: 0;
-                transform: translate3d(0, 0, -500px) scale(0.7);
+                transform: translate3d(0, 0, -600px) scale(0.6);
             }
         }
 
+        /* Exceptional Card Design */
         .card {
             width: 100%;
             height: 100%;
-            background: var(--bg-card);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(20, 20, 20, 0.95) 100%);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 2rem;
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(20px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(40px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
         }
 
         .card::before {
@@ -230,31 +235,32 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
         }
 
         .card.winner-glow {
             border-color: var(--accent-gold);
+            background: linear-gradient(135deg, rgba(201, 169, 97, 0.08) 0%, var(--bg-card) 100%);
             box-shadow:
-                0 0 0 1px var(--accent-gold),
-                0 0 60px var(--glow-gold),
-                0 20px 40px rgba(0, 0, 0, 0.4);
+                0 0 1px 1px var(--accent-gold),
+                0 0 80px var(--glow-gold),
+                0 30px 60px rgba(0, 0, 0, 0.6);
         }
 
         .card-header {
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .card-badge {
             display: inline-block;
-            padding: 0.5rem 1.25rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
             font-weight: 600;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .badge-cantante {
@@ -268,34 +274,35 @@
         }
 
         .card-name {
-            font-size: 1.75rem;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 300;
             color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
         }
 
         .card-team {
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-size: 0.8rem;
+            font-weight: 400;
             color: var(--text-secondary);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
         }
 
-        /* Photo container */
         .card-photo {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 1rem;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 1.5rem;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
             border: 1px solid var(--border-subtle);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
+            font-size: 5rem;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
 
         .card-photo img {
@@ -306,20 +313,20 @@
 
         .card.winner-glow .card-photo {
             border-color: var(--accent-gold);
-            box-shadow: 0 0 30px var(--glow-gold);
+            box-shadow: 0 0 50px var(--glow-gold);
         }
 
         .card.winner-glow .card-photo::before {
             content: '';
             position: absolute;
-            inset: -3px;
-            border-radius: 12px;
-            padding: 2px;
+            inset: -2px;
+            border-radius: 16px;
+            padding: 1px;
             background: linear-gradient(45deg, var(--accent-gold), transparent, var(--accent-gold));
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
-            animation: rotate 3s linear infinite;
+            animation: rotate 4s linear infinite;
         }
 
         @keyframes rotate {
@@ -331,12 +338,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            opacity: 0.4;
-            letter-spacing: 0.1em;
-            z-index: 50;
+            font-size: 4rem;
+            font-weight: 200;
+            color: rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.2em;
+            z-index: 5;
             pointer-events: none;
         }
 
@@ -345,17 +351,17 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 12rem;
-            font-weight: 800;
+            font-size: 14rem;
+            font-weight: 200;
             color: var(--accent-gold);
             opacity: 0;
             pointer-events: none;
             z-index: 200;
-            text-shadow: 0 0 60px var(--glow-gold);
+            text-shadow: 0 0 80px var(--glow-gold);
         }
 
         .countdown.show {
-            animation: countdownPulse 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: countdownPulse 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @keyframes countdownPulse {
@@ -365,7 +371,7 @@
             }
             50% {
                 opacity: 1;
-                transform: translate(-50%, -50%) scale(1.1);
+                transform: translate(-50%, -50%) scale(1);
             }
             100% {
                 opacity: 0;
@@ -374,24 +380,24 @@
         }
 
         .controls {
-            padding: 2rem 4rem 3rem;
+            padding: 2rem 4rem 4rem;
             text-align: center;
             position: relative;
             z-index: 10;
         }
 
         .btn {
-            padding: 1rem 2.5rem;
-            font-size: 0.875rem;
-            font-weight: 600;
+            padding: 1.25rem 3rem;
+            font-size: 0.75rem;
+            font-weight: 500;
             font-family: 'Inter', sans-serif;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            margin: 0 0.5rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 0 0.75rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -406,12 +412,12 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            transition: width 0.5s, height 0.5s;
+            transition: width 0.6s, height 0.6s;
         }
 
         .btn:hover::before {
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
         }
 
         .btn-primary {
@@ -420,12 +426,12 @@
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px var(--glow-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px var(--glow-gold);
         }
 
         .btn-primary:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
             transform: none;
         }
@@ -437,11 +443,12 @@
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
         }
 
-        /* Professional Winner Modal - TV Broadcast Style */
+        /* Exceptional Winner Modal */
         .winner-modal {
             position: fixed;
             top: 0;
@@ -449,7 +456,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.98);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(30px);
             display: none;
             align-items: center;
             justify-content: center;
@@ -458,7 +465,7 @@
 
         .winner-modal.show {
             display: flex;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.6s ease-out;
         }
 
         @keyframes fadeIn {
@@ -469,29 +476,28 @@
         .winner-content {
             text-align: center;
             position: relative;
-            max-width: 600px;
+            max-width: 700px;
         }
 
-        /* Professional Winner Card */
         .winner-card-container {
-            background: var(--bg-card);
-            border: 2px solid var(--accent-gold);
-            border-radius: 20px;
-            padding: 3rem 2.5rem;
+            background: linear-gradient(135deg, rgba(201, 169, 97, 0.05) 0%, var(--bg-card) 100%);
+            border: 1px solid var(--accent-gold);
+            border-radius: 24px;
+            padding: 4rem 3.5rem;
             box-shadow:
-                0 0 0 1px var(--accent-gold),
-                0 0 100px var(--glow-gold),
-                0 30px 60px rgba(0, 0, 0, 0.5);
-            animation: winnerCardEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+                0 0 1px 1px var(--accent-gold),
+                0 0 120px var(--glow-gold),
+                0 40px 80px rgba(0, 0, 0, 0.6);
+            animation: winnerCardEntrance 1s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         @keyframes winnerCardEntrance {
             0% {
                 opacity: 0;
-                transform: scale(0.8) translateY(50px);
+                transform: scale(0.7) translateY(100px);
             }
             60% {
-                transform: scale(1.05) translateY(-10px);
+                transform: scale(1.03) translateY(-15px);
             }
             100% {
                 opacity: 1;
@@ -501,31 +507,31 @@
 
         .winner-badge {
             display: inline-block;
-            padding: 0.75rem 2rem;
+            padding: 0.875rem 2.5rem;
             background: var(--accent-gold);
             color: var(--bg-dark);
             border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 700;
-            letter-spacing: 0.15em;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
         .winner-photo-large {
-            width: 300px;
-            height: 300px;
-            margin: 0 auto 2rem;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-            border: 3px solid var(--accent-gold);
+            width: 340px;
+            height: 340px;
+            margin: 0 auto 2.5rem;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border: 2px solid var(--accent-gold);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8rem;
+            font-size: 10rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 40px var(--glow-gold);
+            box-shadow: 0 0 60px var(--glow-gold);
         }
 
         .winner-photo-large img {
@@ -537,245 +543,154 @@
         .winner-photo-large::before {
             content: '';
             position: absolute;
-            inset: -5px;
-            border-radius: 16px;
-            padding: 3px;
+            inset: -4px;
+            border-radius: 20px;
+            padding: 2px;
             background: linear-gradient(45deg, var(--accent-gold), transparent, var(--accent-gold));
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
-            animation: rotate 4s linear infinite;
+            animation: rotate 5s linear infinite;
         }
 
         .winner-name-display {
-            font-size: 3rem;
-            font-weight: 800;
+            font-size: 3.5rem;
+            font-weight: 300;
             color: var(--accent-gold);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 40px var(--glow-gold);
-            letter-spacing: -0.02em;
+            margin-bottom: 1.25rem;
+            text-shadow: 0 0 60px var(--glow-gold);
+            letter-spacing: -0.01em;
         }
 
         .winner-subtitle {
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 0.9rem;
+            font-weight: 400;
             color: var(--text-secondary);
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
         }
 
         .confetti {
             position: fixed;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             z-index: 999;
         }
 
         @keyframes confettiFall {
             to {
-                transform: translateY(100vh) rotate(360deg);
+                transform: translateY(100vh) rotate(720deg);
                 opacity: 0;
             }
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
             .battle-circle {
-                width: 700px;
-                height: 500px;
-            }
-
-            .card-orbit.left {
-                transform: translate3d(-300px, 0, 0);
-            }
-
-            .card-orbit.right {
-                transform: translate3d(300px, 0, 0);
-            }
-
-            @keyframes ellipseLeft {
-                0% {
-                    transform: translate3d(-300px, 0, 0);
-                    z-index: 10;
-                }
-                25% {
-                    transform: translate3d(0, -60px, 200px);
-                    z-index: 50;
-                }
-                50% {
-                    transform: translate3d(300px, 0, 0);
-                    z-index: 10;
-                }
-                75% {
-                    transform: translate3d(0, 60px, -200px);
-                    z-index: 5;
-                }
-                100% {
-                    transform: translate3d(-300px, 0, 0);
-                    z-index: 10;
-                }
-            }
-
-            @keyframes ellipseRight {
-                0% {
-                    transform: translate3d(300px, 0, 0);
-                    z-index: 10;
-                }
-                25% {
-                    transform: translate3d(0, 60px, -200px);
-                    z-index: 5;
-                }
-                50% {
-                    transform: translate3d(-300px, 0, 0);
-                    z-index: 10;
-                }
-                75% {
-                    transform: translate3d(0, -60px, 200px);
-                    z-index: 50;
-                }
-                100% {
-                    transform: translate3d(300px, 0, 0);
-                    z-index: 10;
-                }
+                width: 800px;
+                height: 600px;
             }
 
             .card-orbit {
-                width: 300px;
-                height: 420px;
-                margin-left: -150px;
-                margin-top: -210px;
+                width: 340px;
+                height: 460px;
+                margin-left: -170px;
+                margin-top: -230px;
+            }
+
+            .card-orbit.left {
+                transform: translate3d(-350px, 0, 0);
+            }
+
+            .card-orbit.right {
+                transform: translate3d(350px, 0, 0);
             }
 
             .card-photo {
-                width: 160px;
-                height: 160px;
+                width: 200px;
+                height: 200px;
+                font-size: 4rem;
+            }
+
+            .card-name {
+                font-size: 1.75rem;
+            }
+
+            .countdown {
+                font-size: 10rem;
+            }
+
+            .winner-photo-large {
+                width: 280px;
+                height: 280px;
+                font-size: 8rem;
+            }
+
+            .winner-name-display {
+                font-size: 2.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 3rem 2rem 2rem;
+            }
+
+            .logo {
+                font-size: 2.25rem;
+            }
+
+            .battle-circle {
+                width: 600px;
+                height: 500px;
+            }
+
+            .card-orbit {
+                width: 280px;
+                height: 380px;
+                margin-left: -140px;
+                margin-top: -190px;
+            }
+
+            .card-orbit.left {
+                transform: translate3d(-250px, 0, 0);
+            }
+
+            .card-orbit.right {
+                transform: translate3d(250px, 0, 0);
+            }
+
+            .card {
+                padding: 2rem 1.5rem;
             }
 
             .card-name {
                 font-size: 1.5rem;
             }
 
-            .countdown {
-                font-size: 8rem;
-            }
-
-            .winner-photo-large {
-                width: 240px;
-                height: 240px;
-                font-size: 6rem;
-            }
-
-            .winner-name-display {
-                font-size: 2.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                padding: 2rem 2rem 1rem;
-            }
-
-            .logo {
-                font-size: 2rem;
-            }
-
-            .battle-circle {
-                width: 500px;
-                height: 400px;
-            }
-
-            .card-orbit {
-                width: 260px;
-                height: 360px;
-                margin-left: -130px;
-                margin-top: -180px;
-            }
-
-            .card-orbit.left {
-                transform: translate3d(-200px, 0, 0);
-            }
-
-            .card-orbit.right {
-                transform: translate3d(200px, 0, 0);
-            }
-
-            @keyframes ellipseLeft {
-                0% {
-                    transform: translate3d(-200px, 0, 0);
-                    z-index: 10;
-                }
-                25% {
-                    transform: translate3d(0, -40px, 150px);
-                    z-index: 50;
-                }
-                50% {
-                    transform: translate3d(200px, 0, 0);
-                    z-index: 10;
-                }
-                75% {
-                    transform: translate3d(0, 40px, -150px);
-                    z-index: 5;
-                }
-                100% {
-                    transform: translate3d(-200px, 0, 0);
-                    z-index: 10;
-                }
-            }
-
-            @keyframes ellipseRight {
-                0% {
-                    transform: translate3d(200px, 0, 0);
-                    z-index: 10;
-                }
-                25% {
-                    transform: translate3d(0, 40px, -150px);
-                    z-index: 5;
-                }
-                50% {
-                    transform: translate3d(-200px, 0, 0);
-                    z-index: 10;
-                }
-                75% {
-                    transform: translate3d(0, -40px, 150px);
-                    z-index: 50;
-                }
-                100% {
-                    transform: translate3d(200px, 0, 0);
-                    z-index: 10;
-                }
-            }
-
-            .card {
-                padding: 1.5rem;
-            }
-
-            .card-name {
-                font-size: 1.25rem;
-            }
-
             .card-photo {
-                width: 140px;
-                height: 140px;
-                font-size: 3rem;
+                width: 160px;
+                height: 160px;
+                font-size: 3.5rem;
             }
 
             .vs-divider {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
 
             .countdown {
-                font-size: 6rem;
+                font-size: 7rem;
             }
 
             .winner-card-container {
-                padding: 2rem 1.5rem;
+                padding: 3rem 2rem;
             }
 
             .winner-photo-large {
-                width: 200px;
-                height: 200px;
-                font-size: 5rem;
+                width: 220px;
+                height: 220px;
+                font-size: 6rem;
             }
 
             .winner-name-display {
@@ -783,12 +698,12 @@
             }
 
             .controls {
-                padding: 1.5rem 2rem 2rem;
+                padding: 1.5rem 2rem 3rem;
             }
 
             .btn {
-                padding: 0.875rem 2rem;
-                font-size: 0.8rem;
+                padding: 1rem 2rem;
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -798,7 +713,7 @@
 
     <div class="container">
         <header class="header">
-            <h1 class="logo">Amici</h1>
+            <h1 class="logo">AMICI</h1>
             <p class="subtitle">La Sfida</p>
         </header>
 
@@ -807,7 +722,6 @@
                 <div class="battle-circle" id="battleCircle">
                     <div class="vs-divider">VS</div>
 
-                    <!-- Card 1 -->
                     <div class="card-orbit left" id="cardOrbit1">
                         <div class="card" id="card1">
                             <div class="card-header">
@@ -816,13 +730,12 @@
                                 <p class="card-team">Squadra Zerbi-Celentano</p>
                             </div>
                             <div class="card-photo">
-                                <!-- Placeholder per foto - inserire: <img src="path/to/photo.jpg" alt="Luca Rossi"> -->
+                                <!-- Inserire: <img src="path/to/photo.jpg" alt="Luca Rossi"> -->
                                 🎤
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card 2 -->
                     <div class="card-orbit right" id="cardOrbit2">
                         <div class="card" id="card2">
                             <div class="card-header">
@@ -831,7 +744,7 @@
                                 <p class="card-team">Squadra Cuccarini-Lo</p>
                             </div>
                             <div class="card-photo">
-                                <!-- Placeholder per foto - inserire: <img src="path/to/photo.jpg" alt="Maria Bianchi"> -->
+                                <!-- Inserire: <img src="path/to/photo.jpg" alt="Maria Bianchi"> -->
                                 💃
                             </div>
                         </div>
@@ -852,17 +765,14 @@
         </div>
     </div>
 
-    <!-- Professional Winner Modal -->
     <div class="winner-modal" id="winnerModal">
         <div class="winner-content">
             <div class="winner-card-container">
                 <div class="winner-badge">★ Vincitore ★</div>
-                <div class="winner-photo-large" id="winnerPhotoLarge">
-                    <!-- Foto vincitore apparirà qui -->
-                </div>
+                <div class="winner-photo-large" id="winnerPhotoLarge"></div>
                 <h2 class="winner-name-display" id="winnerName"></h2>
                 <p class="winner-subtitle" id="winnerTeam"></p>
-                <button class="btn btn-primary" onclick="closeModal()" style="margin-top: 1rem;">
+                <button class="btn btn-primary" onclick="closeModal()">
                     Chiudi
                 </button>
             </div>
@@ -881,13 +791,13 @@
 
             const battleCircle = document.getElementById('battleCircle');
 
-            await sleep(500);
+            await sleep(800);
 
-            // Start ellipse battle animation
+            // Start smooth 15-second ellipse animation
             battleCircle.classList.add('battling');
 
-            // Battle duration - 5 seconds for smooth ellipse
-            await sleep(5000);
+            // Battle duration - 15 seconds
+            await sleep(15000);
 
             battleCircle.classList.remove('battling');
 
@@ -896,7 +806,7 @@
             await showCountdown(2);
             await showCountdown(1);
 
-            // Determine winner randomly
+            // Determine winner
             const winnerNum = Math.random() > 0.5 ? 1 : 2;
             const loserNum = winnerNum === 1 ? 2 : 1;
 
@@ -911,8 +821,8 @@
 
                 setTimeout(() => {
                     countdown.classList.remove('show');
-                    setTimeout(resolve, 100);
-                }, 700);
+                    setTimeout(resolve, 150);
+                }, 850);
             });
         }
 
@@ -921,45 +831,43 @@
             const loserOrbit = document.getElementById('cardOrbit' + loserNum);
             const winnerCard = document.getElementById('card' + winnerNum);
 
-            // Animate cards
             winnerOrbit.classList.add('winner');
             loserOrbit.classList.add('loser');
             winnerCard.classList.add('winner-glow');
 
-            await sleep(1500);
+            await sleep(2000);
 
-            // Get winner data
             const winnerName = winnerCard.querySelector('.card-name').textContent;
             const winnerTeam = winnerCard.querySelector('.card-team').textContent;
             const winnerPhotoContent = winnerCard.querySelector('.card-photo').innerHTML;
 
-            // Set winner modal content
             document.getElementById('winnerName').textContent = winnerName;
             document.getElementById('winnerTeam').textContent = winnerTeam;
             document.getElementById('winnerPhotoLarge').innerHTML = winnerPhotoContent;
 
-            // Show modal
             document.getElementById('winnerModal').classList.add('show');
 
-            // Create confetti
             createConfetti();
         }
 
         function createConfetti() {
-            const colors = ['#d4af37', '#dc2626', '#3b82f6', '#ffffff'];
+            const colors = ['#c9a961', '#e74c3c', '#3498db', '#ffffff', '#f39c12'];
 
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 120; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement('div');
                     confetti.className = 'confetti';
                     confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.top = '-10px';
+                    confetti.style.top = '-20px';
                     confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.animation = `confettiFall ${Math.random() * 2 + 2}s linear forwards`;
+                    confetti.style.width = (Math.random() * 6 + 4) + 'px';
+                    confetti.style.height = (Math.random() * 6 + 4) + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.animation = `confettiFall ${Math.random() * 2.5 + 2.5}s linear forwards`;
                     document.body.appendChild(confetti);
 
-                    setTimeout(() => confetti.remove(), 4000);
-                }, i * 30);
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 25);
             }
         }
 
